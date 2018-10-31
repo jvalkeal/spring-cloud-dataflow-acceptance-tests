@@ -1,0 +1,66 @@
+resource_types:
+- name: artifactory-resource
+  type: docker-image
+  source:
+    repository: springio/artifactory-resource
+    tag: 0.0.3
+
+resources:
+- name: git-repo
+  type: git
+  source:
+    uri: ((github-repo))
+    branch: ((branch))
+
+- name: ci-git-repo
+  type: git
+  source:
+    uri: ((github-repo))
+    branch: ((branch))
+    paths: ["((base-path))/ci/*"]
+
+- name: ci-images-git-repo
+  type: git
+  source:
+    uri: ((github-repo))
+    branch: ((branch))
+    paths: ["((base-path))/ci/images/*"]
+
+- name: artifactory-repo
+  type: artifactory-resource
+  source:
+    uri: ((artifactory-server))
+    username: ((artifactory-username))
+    password: ((artifactory-password))
+    build_name: ((build-name))
+
+- name: spring-cloud-dataflow-ci-image
+  type: docker-image
+  source:
+    repository: springsource-docker-private-local.jfrog.io/spring-cloud-dataflow-ci-image
+    username: ((artifactory-username))
+    password: ((artifactory-password))
+    tag: ((branch))
+
+- name: acceptance-tests-reports
+  type: s3
+  source:
+    bucket: ((spr-artifacts-s3-bucket-name))
+    regexp: distribution-repository/spring-cloud-dataflow-acceptance-tests-(.*).tar.gz
+    access_key_id: ((spr-s3-access-key-id))
+    secret_access_key: ((spr-s3-secret-access-key))
+    region_name: us-west-1
+
+jobs:
+- name: spring-cloud-dataflow-ci-images
+  plan:
+  - get: ci-images-git-repo
+    trigger: true
+  - put: spring-cloud-dataflow-ci-image
+    params:
+      build: ci-images-git-repo/((base-path))/ci/images/spring-cloud-dataflow-ci-image
+      build_args:
+        BRANCH: ((branch))
+        GITHUB_REPO_RAW: ((github-repo-raw))
+        BASE_PATH: ((base-path))
+

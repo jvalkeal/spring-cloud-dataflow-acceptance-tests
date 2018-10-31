@@ -19,8 +19,8 @@ RUN apt-get update && \
     curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o docker-compose && \
     mv docker-compose /usr/bin/ && chmod +x /usr/bin/docker* && \
     curl https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | tar zx && \
-    mv /docker/* /usr/bin/ && chmod +x /usr/bin/docker* \
-    curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_CLI_VERSION}&source=github-rel" | tar -zx \
+    mv /docker/* /usr/bin/ && chmod +x /usr/bin/docker* && \
+    curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_CLI_VERSION}&source=github-rel" | tar -zx && \
     mv cf /usr/bin/ && chmod +x /usr/bin/cf
 
 # Install entrykit

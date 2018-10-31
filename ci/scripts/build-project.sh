@@ -7,7 +7,7 @@ repository=$(pwd)/distribution-repository
 buildversion=`date '+%Y-%m-%d-%H-%M-%S'`
 
 pushd git-repo > /dev/null
-pushd $BASE_PATH > /dev/null
+# pushd $BASE_PATH > /dev/null
 echo $ARTIFACTORY_PASSWORD | docker login -u $ARTIFACTORY_USERNAME --password-stdin springsource-docker-private-local.jfrog.io
 
 
@@ -32,17 +32,15 @@ export CF_DIAL_TIMEOUT=600
 export JAVA_BUILDPACK=java_buildpack_offline
 echo CLEANING UP RESOURCES BEFORE RUNNING TESTS
 # Cleanup resources before running the tests, do not download artifacts
-./run.sh -p cloudfoundry -t -s -d -dv 1.6.1.BUILD-SNAPSHOT -sv 1.0.8.BUILD-SNAPSHOT 
+./run.sh -p cloudfoundry -t -s -d -dv 1.6.1.BUILD-SNAPSHOT -sv 1.0.8.BUILD-SNAPSHOT || n=1
 echo FINISHED CLEAING UP RESOURCES
 # Run the tests
 echo RUNNING TESTS
 DEPLOY_PAUSE_TIME=20 ./run.sh -p cloudfoundry -b rabbit -dv 1.6.1.BUILD-SNAPSHOT -c
 echo FINISHED RUNNING TESTS
 
-
-./gradlew clean build || n=1
 tar -zc --ignore-failed-read --file ${repository}/spring-cloud-dataflow-acceptance-tests-${buildversion}.tar.gz spring-cloud-dataflow-acceptance-tests/build/test-docker-logs
-popd > /dev/null
+#popd > /dev/null
 popd > /dev/null
 
 if [ "$n" -gt 0 ]; then

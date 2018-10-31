@@ -9,7 +9,8 @@ ADD https://raw.githubusercontent.com/spring-io/concourse-java-scripts/v0.0.1/co
 
 ENV DOCKER_VERSION=17.12.0-ce \
     DOCKER_COMPOSE_VERSION=1.18.0 \
-    ENTRYKIT_VERSION=0.4.0
+    ENTRYKIT_VERSION=0.4.0 \
+    CF_CLI_VERSION=6.40.0
 
 RUN apt-get update && \
     apt-get install -y curl && \
@@ -18,7 +19,9 @@ RUN apt-get update && \
     curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o docker-compose && \
     mv docker-compose /usr/bin/ && chmod +x /usr/bin/docker* && \
     curl https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | tar zx && \
-    mv /docker/* /usr/bin/ && chmod +x /usr/bin/docker*
+    mv /docker/* /usr/bin/ && chmod +x /usr/bin/docker* \
+    curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_CLI_VERSION}&source=github-rel" | tar -zx \
+    mv cf /usr/bin/ && chmod +x /usr/bin/cf
 
 # Install entrykit
 RUN curl -L https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_VERSION}/entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz | tar zx && \

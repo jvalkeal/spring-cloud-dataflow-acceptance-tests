@@ -6,11 +6,11 @@
 #    tag: 0.0.3
 
 resources:
-#- name: git-repo
-#  type: git
-#  source:
-#    uri: ((github-repo))
-#    branch: ((branch))
+- name: git-repo
+  type: git
+  source:
+    uri: ((github-repo))
+    branch: ((branch))
 
 #- name: ci-git-repo
 #  type: git
@@ -42,14 +42,14 @@ resources:
     password: ((artifactory-password))
     tag: ((branch))
 
-#- name: acceptance-tests-reports
-#  type: s3
-#  source:
-#    bucket: ((spr-artifacts-s3-bucket-name))
-#    regexp: distribution-repository/spring-cloud-dataflow-acceptance-tests-(.*).tar.gz
-#    access_key_id: ((spr-s3-access-key-id))
-#    secret_access_key: ((spr-s3-secret-access-key))
-#    region_name: us-west-1
+- name: acceptance-tests-reports
+  type: s3
+  source:
+    bucket: ((spr-artifacts-s3-bucket-name))
+    regexp: distribution-repository/spring-cloud-dataflow-acceptance-tests-(.*).tar.gz
+    access_key_id: ((spr-s3-access-key-id))
+    secret_access_key: ((spr-s3-secret-access-key))
+    region_name: us-west-1
 
 jobs:
 - name: spring-cloud-dataflow-ci-images
@@ -63,4 +63,30 @@ jobs:
         BRANCH: ((branch))
         GITHUB_REPO_RAW: ((github-repo-raw))
         BASE_PATH: ((base-path))
+
+- name: acceptance-tests
+  serial: true
+  public: false
+  plan:
+  - get: spring-cloud-dataflow-ci-image
+    trigger: true
+    passed:
+      - "spring-cloud-dataflow-ci-images"
+  - get: git-repo
+    trigger: true
+#  - get: artifactory-repo
+#    trigger: true
+  - do:
+    - task: build-project
+      privileged: true
+      timeout: 90m
+      image: spring-cloud-dataflow-ci-image
+      file: git-repo/((base-path))/ci/tasks/build-project.yml
+      params:
+        BASE_PATH: ((base-path))
+      on_failure:
+        aggregate:
+        - put: acceptance-tests-reports
+          params:
+            file: distribution-repository/spring-cloud-dataflow-acceptance-tests-*.tar.gz
 

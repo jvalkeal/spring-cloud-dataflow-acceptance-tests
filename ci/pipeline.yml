@@ -84,6 +84,30 @@ jobs:
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
+
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_URL: https://api.sys.needles.cf-app.com
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_ORG: bamboo
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_SPACE: test
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_DOMAIN: app.needles.cf-app.com
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_SKIP_SSL_VALIDATION: true
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_STREAM_SERVICES: rabbit
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_TASK_SERVICES: mysql
+        MYSQL_SERVICE_NAME: p-mysql
+        MYSQL_PLAN_NAME: 100mb
+        RABBIT_SERVICE_NAME: p-rabbitmq
+        RABBIT_PLAN_NAME: standard
+        REDIS_SERVICE_NAME: p-redis
+        REDIS_PLAN_NAME: shared-vm
+        DEPLOY_PAUSE_TIME: 10
+        TRUST_CERTS: api.sys.needles.cf-app.com
+        CF_DIAL_TIMEOUT: 600
+        JAVA_BUILDPACK: java_buildpack_offline
+
+        PLATFORM: cloudfoundry
+        BINDER: rabbit
+        DATAFLOW_VERSION: 1.6.1.BUILD-SNAPSHOT
+
+
       on_failure:
         aggregate:
         - put: acceptance-tests-reports

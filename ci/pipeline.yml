@@ -24,7 +24,7 @@ resources:
   type: s3
   source:
     bucket: ((spr-artifacts-s3-bucket-name))
-    regexp: distribution-repository/spring-cloud-dataflow-acceptance-tests-(.*).tar.gz
+    regexp: spring-cloud-dataflow-acceptance-tests/spring-cloud-dataflow-acceptance-tests-(.*).tar.gz
     access_key_id: ((spr-s3-access-key-id))
     secret_access_key: ((spr-s3-secret-access-key))
     region_name: us-west-1
@@ -42,8 +42,9 @@ jobs:
         GITHUB_REPO_RAW: ((github-repo-raw))
         BASE_PATH: ((base-path))
 
-- name: acceptance-tests
+- name: ch-huron-scdf16x-classic
   serial: true
+  serial_groups: [cf-env]
   public: false
   plan:
   - get: spring-cloud-dataflow-ci-image
@@ -81,7 +82,53 @@ jobs:
         PRE_CLEAN_SCRIPT: "./run.sh -p ${PLATFORM} -t -s -d -dv ${DATAFLOW_VERSION} -sv ${SKIPPER_VERSION}"
         RUN_SCRIPT: "./run.sh -p ${PLATFORM} -b ${BINDER} -dv ${DATAFLOW_VERSION} -c"
         POST_CLEAN_SCRIPT: "./run.sh -p ${PLATFORM} -t -s -d"
-      on_failure:
+      ensure:
+        aggregate:
+        - put: acceptance-tests-reports
+          params:
+            file: distribution-repository/spring-cloud-dataflow-acceptance-tests-*.tar.gz
+
+- name: ch-huron-scdf16x-skipper
+  serial: true
+  serial_groups: [cf-env]
+  public: false
+  plan:
+  - get: spring-cloud-dataflow-ci-image
+    trigger: true
+    passed:
+      - "spring-cloud-dataflow-ci-images"
+  - get: git-repo
+    trigger: true
+  - do:
+    - task: build-project
+      privileged: true
+      timeout: 90m
+      image: spring-cloud-dataflow-ci-image
+      file: git-repo/((base-path))/ci/tasks/build-project.yml
+      params:
+        BASE_PATH: ((base-path))
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_ORG: bamboo
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_SPACE: test
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_SKIP_SSL_VALIDATION: true
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_STREAM_SERVICES: rabbit
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_TASK_SERVICES: mysql
+        MYSQL_SERVICE_NAME: p-mysql
+        MYSQL_PLAN_NAME: 100mb
+        RABBIT_SERVICE_NAME: p-rabbitmq
+        RABBIT_PLAN_NAME: standard
+        REDIS_SERVICE_NAME: p-redis
+        REDIS_PLAN_NAME: shared-vm
+        DEPLOY_PAUSE_TIME: 10
+        CF_DIAL_TIMEOUT: 600
+        JAVA_BUILDPACK: java_buildpack_offline
+        DATAFLOW_VERSION: 1.6.1.BUILD-SNAPSHOT
+        SKIPPER_VERSION: 1.0.8.BUILD-SNAPSHOT
+        PLATFORM: cloudfoundry
+        BINDER: rabbit
+        PRE_CLEAN_SCRIPT: "./run.sh -p ${PLATFORM} -t -s -d -dv ${DATAFLOW_VERSION} -sv ${SKIPPER_VERSION}"
+        RUN_SCRIPT: "./run.sh -p ${PLATFORM} -b ${BINDER} -dv ${DATAFLOW_VERSION} -sv ${SKIPPER_VERSION} -c"
+        POST_CLEAN_SCRIPT: "./run.sh -p ${PLATFORM} -t -s -d"
+      ensure:
         aggregate:
         - put: acceptance-tests-reports
           params:

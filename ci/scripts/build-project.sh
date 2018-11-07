@@ -5,6 +5,7 @@ n=0
 source $(dirname $0)/common.sh
 repository=$(pwd)/distribution-repository
 buildversion=`date '+%Y-%m-%d-%H-%M-%S'`
+logfile=console.out
 
 pushd git-repo > /dev/null
 # with no base path, don't try to change dir
@@ -21,23 +22,21 @@ export SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_USERNAME=$CF_API_USERNAME
 export SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_PASSWORD=$CF_API_PASSWORD
 
 if [ -n "$PRE_CLEAN_SCRIPT" ]; then
-  echo PLATFORM is $PLATFORM
-  echo PRE_CLEAN_SCRIPT is $PRE_CLEAN_SCRIPT
-  echo CLEANING UP RESOURCES BEFORE RUNNING TESTS
-  eval ${PRE_CLEAN_SCRIPT} || n=1
+  echo "CLEANING UP RESOURCES BEFORE RUNNING TESTS" 2>&1 | tee -a ${logfile}
+  eval ${PRE_CLEAN_SCRIPT} 2>&1 | tee -a ${logfile} || n=1
 fi
 
 if [ -n "$RUN_SCRIPT" ]; then
-  echo RUNNING TESTS
-#  eval ${RUN_SCRIPT} || n=1
+  echo "RUNNING TESTS" 2>&1 | tee -a ${logfile}
+  eval ${RUN_SCRIPT} 2>&1 | tee -a ${logfile} || n=1
 fi
 
 if [ -n "$POST_CLEAN_SCRIPT" ]; then
-  echo CLEANING UP RESOURCES AFTER RUNNING TESTS
-  eval ${POST_CLEAN_SCRIPT} || n=1
+  echo "CLEANING UP RESOURCES AFTER RUNNING TESTS" 2>&1 | tee -a ${logfile}
+  eval ${POST_CLEAN_SCRIPT} 2>&1 | tee -a ${logfile} || n=1
 fi
 
-tar -zc --ignore-failed-read --file ${repository}/spring-cloud-dataflow-acceptance-tests-${buildversion}.tar.gz target/surefire-reports
+tar -zc --ignore-failed-read --file ${repository}/spring-cloud-dataflow-acceptance-tests-${buildversion}.tar.gz target/surefire-reports ${logfile}
 
 # with no base path, don't try to change dir
 if [ -n "$BASE_PATH" ]; then

@@ -20,3 +20,6 @@ params:
   ARTIFACTORY_PASSWORD: ((artifactory-password))
   CF_API_USERNAME: ((cf-huron-username))
   CF_API_PASSWORD: ((cf-huron-password))
+  CF_API_URL: ((cf-huron-url))
+  CF_API_DOMAIN: ((cf-huron-domain))
+  CF_API_ADDRESS: ((cf-huron-api))

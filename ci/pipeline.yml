@@ -1,10 +1,3 @@
-#resource_types:
-#- name: artifactory-resource
-#  type: docker-image
-#  source:
-#    repository: springio/artifactory-resource
-#    tag: 0.0.3
-
 resources:
 - name: git-repo
   type: git
@@ -12,27 +5,12 @@ resources:
     uri: ((github-repo))
     branch: ((branch))
 
-#- name: ci-git-repo
-#  type: git
-#  source:
-#    uri: ((github-repo))
-#    branch: ((branch))
-#    paths: ["((base-path))/ci/*"]
-
 - name: ci-images-git-repo
   type: git
   source:
     uri: ((github-repo))
     branch: ((branch))
     paths: ["((base-path))ci/images/*"]
-
-#- name: artifactory-repo
-#  type: artifactory-resource
-#  source:
-#    uri: ((artifactory-server))
-#    username: ((artifactory-username))
-#    password: ((artifactory-password))
-#    build_name: ((build-name))
 
 - name: spring-cloud-dataflow-ci-image
   type: docker-image
@@ -74,8 +52,6 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: true
-#  - get: artifactory-repo
-#    trigger: true
   - do:
     - task: build-project
       privileged: true
@@ -84,10 +60,10 @@ jobs:
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
-        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_URL: https://api.sys.needles.cf-app.com
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_URL: https://api.sys.huron.cf-app.com
         SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_ORG: bamboo
         SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_SPACE: test
-        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_DOMAIN: app.needles.cf-app.com
+        SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_DOMAIN: app.huron.cf-app.com
         SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_SKIP_SSL_VALIDATION: true
         SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_STREAM_SERVICES: rabbit
         SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_TASK_SERVICES: mysql
@@ -98,16 +74,16 @@ jobs:
         REDIS_SERVICE_NAME: p-redis
         REDIS_PLAN_NAME: shared-vm
         DEPLOY_PAUSE_TIME: 10
-        TRUST_CERTS: api.sys.needles.cf-app.com
+        TRUST_CERTS: api.sys.huron.cf-app.com
         CF_DIAL_TIMEOUT: 600
         JAVA_BUILDPACK: java_buildpack_offline
         DATAFLOW_VERSION: 1.6.1.BUILD-SNAPSHOT
         SKIPPER_VERSION: 1.0.8.BUILD-SNAPSHOT
         PLATFORM: cloudfoundry
         BINDER: rabbit
-        PRE_CLEAN_SCRIPT: "./run.sh -p \\${PLATFORM} -t -s -d -dv \\${DATAFLOW_VERSION} -sv \\${SKIPPER_VERSION}"
-        RUN_SCRIPT: "./run.sh -p \\${PLATFORM} -b \\${BINDER} -dv \\${DATAFLOW_VERSION} -c"
-        POST_CLEAN_SCRIPT: "./run.sh -p \\${PLATFORM} -t -s -d"
+        PRE_CLEAN_SCRIPT: "./run.sh -p ${PLATFORM} -t -s -d -dv ${DATAFLOW_VERSION} -sv ${SKIPPER_VERSION}"
+        RUN_SCRIPT: "./run.sh -p ${PLATFORM} -b ${BINDER} -dv ${DATAFLOW_VERSION} -c"
+        POST_CLEAN_SCRIPT: "./run.sh -p ${PLATFORM} -t -s -d"
       on_failure:
         aggregate:
         - put: acceptance-tests-reports

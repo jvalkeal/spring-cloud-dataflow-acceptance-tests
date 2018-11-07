@@ -18,5 +18,5 @@ run:
 params:
   ARTIFACTORY_USERNAME: ((artifactory-username))
   ARTIFACTORY_PASSWORD: ((artifactory-password))
-  CF_API_USERNAME: ((cf-huron-username))
-  CF_API_PASSWORD: ((cf-huron-password))
+  CF_API_USERNAME: ((cf-needles-username))
+  CF_API_PASSWORD: ((cf-needles-password))

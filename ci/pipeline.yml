@@ -48,11 +48,11 @@ jobs:
   public: false
   plan:
   - get: spring-cloud-dataflow-ci-image
-    trigger: true
+    trigger: false
     passed:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
-    trigger: true
+    trigger: false
   - do:
     - task: build-project
       privileged: true
@@ -94,11 +94,11 @@ jobs:
   public: false
   plan:
   - get: spring-cloud-dataflow-ci-image
-    trigger: true
+    trigger: false
     passed:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
-    trigger: true
+    trigger: false
   - do:
     - task: build-project
       privileged: true
@@ -156,7 +156,7 @@ jobs:
         SKIPPER_VERSION: 1.1.1.BUILD-SNAPSHOT
         PLATFORM: local
         BINDER: rabbit
-        RUN_SCRIPT: "./run.sh -p ${PLATFORM} -b ${BINDER} -m -dv ${DATAFLOW_VERSION} -sv ${SKIPPER_VERSION} -c"
+        RUN_SCRIPT: "./run.sh -p ${PLATFORM} -b ${BINDER} -m -dv ${DATAFLOW_VERSION} -sv ${SKIPPER_VERSION}"
       ensure:
         aggregate:
         - put: acceptance-tests-reports

@@ -1,6 +1,7 @@
 FROM openjdk:8u141-jdk
 
 RUN apt-get update && \
+    apt-get install -y netcat && \
     apt-get install -y git && \
     apt-get install -y libxml2-utils && \
     apt-get install -y jq

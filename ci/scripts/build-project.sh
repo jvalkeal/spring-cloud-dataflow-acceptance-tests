@@ -8,7 +8,9 @@ buildversion=`date '+%Y-%m-%d-%H-%M-%S'`
 
 pushd git-repo > /dev/null
 # with no base path, don't try to change dir
-if [ -n "$BASE_PATH" ] && pushd $BASE_PATH > /dev/null
+if [ -n "$BASE_PATH" ]; then
+  pushd $BASE_PATH > /dev/null
+fi
 
 echo $ARTIFACTORY_PASSWORD | docker login -u $ARTIFACTORY_USERNAME --password-stdin springsource-docker-private-local.jfrog.io
 
@@ -33,7 +35,9 @@ fi
 tar -zc --ignore-failed-read --file ${repository}/spring-cloud-dataflow-acceptance-tests-${buildversion}.tar.gz target/surefire-reports
 
 # with no base path, don't try to change dir
-if [ -n "$BASE_PATH" ] && popd > /dev/null
+if [ -n "$BASE_PATH" ]; then
+  popd > /dev/null
+fi
 popd > /dev/null
 
 if [ "$n" -gt 0 ]; then

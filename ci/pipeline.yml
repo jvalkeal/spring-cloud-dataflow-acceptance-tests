@@ -134,3 +134,32 @@ jobs:
           params:
             file: distribution-repository/spring-cloud-dataflow-acceptance-tests-*.tar.gz
 
+- name: local-scdf171-bs-skipper-111-bs-rabbit
+  serial: true
+  public: false
+  plan:
+  - get: spring-cloud-dataflow-ci-image
+    trigger: true
+    passed:
+      - "spring-cloud-dataflow-ci-images"
+  - get: git-repo
+    trigger: true
+  - do:
+    - task: build-project
+      privileged: true
+      timeout: 90m
+      image: spring-cloud-dataflow-ci-image
+      file: git-repo/((base-path))/ci/tasks/build-project.yml
+      params:
+        BASE_PATH: ((base-path))
+        DATAFLOW_VERSION: 1.7.1.BUILD-SNAPSHOT
+        SKIPPER_VERSION: 1.1.1.BUILD-SNAPSHOT
+        PLATFORM: local
+        BINDER: rabbit
+        RUN_SCRIPT: "./run.sh -p ${PLATFORM} -b ${BINDER} -m -dv ${DATAFLOW_VERSION} -sv ${SKIPPER_VERSION} -c"
+      ensure:
+        aggregate:
+        - put: acceptance-tests-reports
+          params:
+            file: distribution-repository/spring-cloud-dataflow-acceptance-tests-*.tar.gz
+

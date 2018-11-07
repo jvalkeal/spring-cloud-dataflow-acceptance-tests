@@ -2,7 +2,7 @@
 set -e
 
 n=0
-#source $(dirname $0)/common.sh
+source $(dirname $0)/common.sh
 repository=$(pwd)/distribution-repository
 buildversion=`date '+%Y-%m-%d-%H-%M-%S'`
 

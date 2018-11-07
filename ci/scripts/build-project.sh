@@ -36,7 +36,11 @@ if [ -n "$POST_CLEAN_SCRIPT" ]; then
   eval ${POST_CLEAN_SCRIPT} 2>&1 | tee -a ${logfile} || n=1
 fi
 
-tar -zc --ignore-failed-read --file ${repository}/spring-cloud-dataflow-acceptance-tests-${buildversion}.tar.gz target/surefire-reports ${logfile}
+find . -name "*.log" | xargs tar -zc \
+    --ignore-failed-read \
+    --file ${repository}/spring-cloud-dataflow-acceptance-tests-${buildversion}.tar.gz \
+    target/surefire-reports \
+    ${logfile}
 
 # with no base path, don't try to change dir
 if [ -n "$BASE_PATH" ]; then

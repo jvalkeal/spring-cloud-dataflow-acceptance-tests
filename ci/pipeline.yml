@@ -42,7 +42,7 @@ jobs:
         GITHUB_REPO_RAW: ((github-repo-raw))
         BASE_PATH: ((base-path))
 
-- name: ch-huron-scdf16x-classic
+- name: cf-huron-scdf16x-classic
   serial: true
   serial_groups: [cf-env]
   public: false
@@ -88,7 +88,7 @@ jobs:
           params:
             file: distribution-repository/spring-cloud-dataflow-acceptance-tests-*.tar.gz
 
-- name: ch-huron-scdf16x-skipper
+- name: cf-huron-scdf16x-skipper
   serial: true
   serial_groups: [cf-env]
   public: false

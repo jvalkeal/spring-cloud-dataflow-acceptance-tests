@@ -2,7 +2,7 @@
 set -e
 
 n=0
-source $(dirname $0)/common.sh
+#source $(dirname $0)/common.sh
 repository=$(pwd)/distribution-repository
 buildversion=`date '+%Y-%m-%d-%H-%M-%S'`
 
@@ -15,20 +15,17 @@ echo $ARTIFACTORY_PASSWORD | docker login -u $ARTIFACTORY_USERNAME --password-st
 export SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_USERNAME=$CF_API_USERNAME
 export SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_PASSWORD=$CF_API_PASSWORD
 
-if [ -n "$PRE_CLEAN_SCRIPT" ]
-then
+if [ -n "$PRE_CLEAN_SCRIPT" ]; then
   echo CLEANING UP RESOURCES BEFORE RUNNING TESTS
   eval ${PRE_CLEAN_SCRIPT} || n=1
 fi
 
-if [ -n "$RUN_SCRIPT" ]
-then
+if [ -n "$RUN_SCRIPT" ]; then
   echo RUNNING TESTS
   eval ${RUN_SCRIPT} || n=1
 fi
 
-if [ -n "$POST_CLEAN_SCRIPT" ]
-then
+if [ -n "$POST_CLEAN_SCRIPT" ]; then
   echo CLEANING UP RESOURCES AFTER RUNNING TESTS
   eval ${POST_CLEAN_SCRIPT} || n=1
 fi

@@ -149,7 +149,7 @@ jobs:
       privileged: true
       timeout: 90m
       image: spring-cloud-dataflow-ci-image
-      file: git-repo/((base-path))/ci/tasks/build-project.yml
+      file: git-repo/((base-path))/ci/tasks/test-gcloud.yml
       params:
         BASE_PATH: ((base-path))
         DATAFLOW_VERSION: 1.7.1.BUILD-SNAPSHOT

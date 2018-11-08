@@ -17,6 +17,10 @@ RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y libudev1 && \
     apt-get install -y iptables && \
+    echo "deb http://packages.cloud.google.com/apt $(lsb_release -c -s) main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
+    apt-get install -y google-cloud-sdk && \
+    apt-get install -y kubectl && \
     curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o docker-compose && \
     mv docker-compose /usr/bin/ && chmod +x /usr/bin/docker* && \
     curl https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | tar zx && \

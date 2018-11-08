@@ -18,6 +18,9 @@ RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y libudev1 && \
     apt-get install -y iptables && \
+    apt-get install -y openssh-client && \
+    apt-get install -y gnupg && \
+    apt-get install -y apt-transport-https && \
     curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o docker-compose && \
     mv docker-compose /usr/bin/ && chmod +x /usr/bin/docker* && \
     curl https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | tar zx && \

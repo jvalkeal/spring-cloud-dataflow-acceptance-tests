@@ -18,7 +18,6 @@ RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y libudev1 && \
     apt-get install -y iptables && \
-    apt-get install -y python && \
     curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o docker-compose && \
     mv docker-compose /usr/bin/ && chmod +x /usr/bin/docker* && \
     curl https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | tar zx && \
@@ -26,6 +25,7 @@ RUN apt-get update && \
     curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_CLI_VERSION}&source=github-rel" | tar -zx && \
     mv cf /usr/bin/ && chmod +x /usr/bin/cf && \
     echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -c -s) main" > /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    apt-get update && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \ 
     apt-get install -y google-cloud-sdk && \
     apt-get install -y kubectl

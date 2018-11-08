@@ -139,11 +139,11 @@ jobs:
   public: false
   plan:
   - get: spring-cloud-dataflow-ci-image
-    trigger: true
+    trigger: false
     passed:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
-    trigger: true
+    trigger: false
   - do:
     - task: build-project
       privileged: true

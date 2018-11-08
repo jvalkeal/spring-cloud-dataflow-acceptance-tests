@@ -28,8 +28,8 @@ RUN apt-get update && \
     curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_CLI_VERSION}&source=github-rel" | tar -zx && \
     mv cf /usr/bin/ && chmod +x /usr/bin/cf && \
     echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -c -s) main" > /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    apt-get update && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \ 
+    apt-get update && \
     apt-get install -y google-cloud-sdk && \
     apt-get install -y kubectl
 

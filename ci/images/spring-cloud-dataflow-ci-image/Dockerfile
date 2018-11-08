@@ -1,6 +1,7 @@
 FROM openjdk:8u141-jdk
 
 RUN apt-get update && \
+    apt-get install -y netcat && \
     apt-get install -y git && \
     apt-get install -y libxml2-utils && \
     apt-get install -y jq
@@ -13,7 +14,6 @@ ENV DOCKER_VERSION=17.12.0-ce \
     CF_CLI_VERSION=6.40.0
 
 RUN apt-get update && \
-    apt-get install -y netcat && \
     apt-get install -y curl && \
     apt-get install -y libudev1 && \
     apt-get install -y iptables && \

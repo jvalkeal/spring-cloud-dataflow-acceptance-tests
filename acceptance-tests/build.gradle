@@ -24,7 +24,7 @@ buildscript {
 		springCloudSkipper111Version = "${springCloudSkipper111VersionTag}.RELEASE"
 		springCloudSkipper112VersionTag = '1.1.2'
 		springCloudSkipper112Version = "${springCloudSkipper112VersionTag}.RELEASE"
-		springCloudSkipper11xVersionTag = '1.1.3'
+		springCloudSkipper11xVersionTag = '1.1.4'
 		springCloudSkipper11xVersion = "${springCloudSkipper11xVersionTag}.BUILD-SNAPSHOT"
 		springCloudSkipper20xVersionTag = '2.0.0'
 		springCloudSkipper20xVersion = "${springCloudSkipper20xVersionTag}.BUILD-SNAPSHOT"

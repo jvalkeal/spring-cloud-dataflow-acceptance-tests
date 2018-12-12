@@ -93,7 +93,7 @@ jobs:
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
-        SKIPPER_INCLUDE_TAGS: postgres
+        DATAFLOW_INCLUDE_TAGS: postgres
       on_failure:
         aggregate:
         - put: acceptance-tests-reports
@@ -122,7 +122,7 @@ jobs:
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
-        SKIPPER_INCLUDE_TAGS: mysql
+        DATAFLOW_INCLUDE_TAGS: mysql
       on_failure:
         aggregate:
         - put: acceptance-tests-reports
@@ -151,7 +151,7 @@ jobs:
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
-        SKIPPER_INCLUDE_TAGS: mssql
+        DATAFLOW_INCLUDE_TAGS: mssql
       on_failure:
         aggregate:
         - put: acceptance-tests-reports
@@ -180,7 +180,7 @@ jobs:
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
-        SKIPPER_INCLUDE_TAGS: oracle
+        DATAFLOW_INCLUDE_TAGS: oracle
       on_failure:
         aggregate:
         - put: acceptance-tests-reports
@@ -209,7 +209,7 @@ jobs:
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
-        SKIPPER_INCLUDE_TAGS: db2
+        DATAFLOW_INCLUDE_TAGS: db2
       on_failure:
         aggregate:
         - put: acceptance-tests-reports

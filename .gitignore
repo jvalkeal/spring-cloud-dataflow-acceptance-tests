@@ -24,6 +24,7 @@ app-logs/
 *.jar
 *.log
 *.out
+.gradle
 **/scdf-manifest.yml
 **/skipper-manifest.yml
 **/scdf.yml

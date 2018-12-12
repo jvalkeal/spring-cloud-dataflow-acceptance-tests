@@ -10,7 +10,7 @@ pushd git-repo > /dev/null
 pushd $BASE_PATH > /dev/null
 echo $ARTIFACTORY_PASSWORD | docker login -u $ARTIFACTORY_USERNAME --password-stdin springsource-docker-private-local.jfrog.io
 ./gradlew clean build -PdataflowIncludeTags="${DATAFLOW_INCLUDE_TAGS}" -PdataflowExcludeTags="${DATAFLOW_EXCLUDE_TAGS}" || n=1
-tar -zc --ignore-failed-read --file ${repository}/spring-cloud-skipper-acceptance-tests-${buildversion}.tar.gz spring-cloud-skipper-acceptance-tests/build/test-docker-logs
+tar -zc --ignore-failed-read --file ${repository}/spring-cloud-dataflow-acceptance-tests-${buildversion}.tar.gz spring-cloud-dataflow-acceptance-tests/build/test-docker-logs
 popd > /dev/null
 popd > /dev/null
 

@@ -339,7 +339,7 @@ jobs:
         BASE_PATH: ((base-path))
         APP_VERSION: 11x
         APP_TEMPLATE: skipper-server-with-drivers-template2
-        SKIPPER_VERSION: 1.1.4.BUILD-SNAPSHOT
+        SKIPPER_VERSION: 1.1.3.BUILD-SNAPSHOT
     - task: build-skipper-server-with-drivers20x
       privileged: true
       timeout: 30m

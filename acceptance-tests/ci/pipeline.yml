@@ -234,9 +234,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-100
+        distribution-repository: distribution-repository-skipper100
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 100
@@ -248,9 +248,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-101
+        distribution-repository: distribution-repository-skipper101
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 101
@@ -262,9 +262,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-102
+        distribution-repository: distribution-repository-skipper102
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 102
@@ -276,9 +276,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-103
+        distribution-repository: distribution-repository-skipper103
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 103
@@ -290,9 +290,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-104
+        distribution-repository: distribution-repository-skipper104
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 104
@@ -304,9 +304,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-105
+        distribution-repository: distribution-repository-skipper105
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 105
@@ -318,9 +318,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-110
+        distribution-repository: distribution-repository-skipper110
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 110
@@ -332,9 +332,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-11x
+        distribution-repository: distribution-repository-skipper11x
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 11x
@@ -346,9 +346,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-20x
+        distribution-repository: distribution-repository-skipper20x
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 20x
@@ -360,9 +360,9 @@ jobs:
       image: spring-cloud-skipper-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-dataflow-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-apps-git-repo
+        git-repo: ci-git-repo
       output_mapping:
-        distribution-repository: distribution-repository-dataflow-20x
+        distribution-repository: distribution-repository-dataflow20x
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 20x
@@ -377,16 +377,16 @@ jobs:
           repository: busybox
       inputs:
       - name: ci-git-repo
-      - name: distribution-repository-100
-      - name: distribution-repository-101
-      - name: distribution-repository-102
-      - name: distribution-repository-103
-      - name: distribution-repository-104
-      - name: distribution-repository-105
-      - name: distribution-repository-110
-      - name: distribution-repository-11x
-      - name: distribution-repository-20x
-      - name: distribution-repository-dataflow-20x
+      - name: distribution-repository-skipper100
+      - name: distribution-repository-skipper101
+      - name: distribution-repository-skipper102
+      - name: distribution-repository-skipper103
+      - name: distribution-repository-skipper104
+      - name: distribution-repository-skipper105
+      - name: distribution-repository-skipper110
+      - name: distribution-repository-skipper11x
+      - name: distribution-repository-skipper20x
+      - name: distribution-repository-dataflow20x
       outputs:
       - name: distribution-repository
       run:

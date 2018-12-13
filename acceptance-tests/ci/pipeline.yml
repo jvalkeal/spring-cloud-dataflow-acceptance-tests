@@ -1,3 +1,6 @@
+#################################################
+# Resource Types
+#################################################
 resource_types:
 - name: artifactory-resource
   type: docker-image
@@ -5,6 +8,9 @@ resource_types:
     repository: springio/artifactory-resource
     tag: 0.0.3
 
+#################################################
+# Resources
+#################################################
 resources:
 - name: git-repo
   type: git
@@ -58,6 +64,9 @@ resources:
     secret_access_key: ((spr-s3-secret-access-key))
     region_name: us-west-1
 
+#################################################
+# Jobs
+#################################################
 jobs:
 - name: spring-cloud-skipper-ci-images
   plan:

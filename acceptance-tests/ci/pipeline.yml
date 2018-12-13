@@ -47,10 +47,10 @@ resources:
     password: ((artifactory-password))
     build_name: ((build-name))
 
-- name: spring-cloud-skipper-ci-image
+- name: spring-cloud-dataflow-ci-image
   type: docker-image
   source:
-    repository: springsource-docker-private-local.jfrog.io/spring-cloud-skipper-ci-image
+    repository: springsource-docker-private-local.jfrog.io/spring-cloud-dataflow-ci-image
     username: ((artifactory-username))
     password: ((artifactory-password))
     tag: ((branch))
@@ -68,13 +68,13 @@ resources:
 # Jobs
 #################################################
 jobs:
-- name: spring-cloud-skipper-ci-images
+- name: spring-cloud-dataflow-ci-images
   plan:
   - get: ci-images-git-repo
     trigger: true
-  - put: spring-cloud-skipper-ci-image
+  - put: spring-cloud-dataflow-ci-image
     params:
-      build: ci-images-git-repo/((base-path))/ci/images/spring-cloud-skipper-ci-image
+      build: ci-images-git-repo/((base-path))/ci/images/spring-cloud-dataflow-ci-image
       build_args:
         BRANCH: ((branch))
         GITHUB_REPO_RAW: ((github-repo-raw))
@@ -84,10 +84,10 @@ jobs:
   serial: true
   public: false
   plan:
-  - get: spring-cloud-skipper-ci-image
+  - get: spring-cloud-dataflow-ci-image
     trigger: true
     passed:
-      - "spring-cloud-skipper-ci-images"
+      - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: true
   - get: artifactory-repo
@@ -98,7 +98,7 @@ jobs:
     - task: build-project
       privileged: true
       timeout: 90m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
@@ -113,10 +113,10 @@ jobs:
   serial: true
   public: false
   plan:
-  - get: spring-cloud-skipper-ci-image
+  - get: spring-cloud-dataflow-ci-image
     trigger: true
     passed:
-      - "spring-cloud-skipper-ci-images"
+      - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: true
   - get: artifactory-repo
@@ -127,7 +127,7 @@ jobs:
     - task: build-project
       privileged: true
       timeout: 90m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
@@ -142,10 +142,10 @@ jobs:
   serial: true
   public: false
   plan:
-  - get: spring-cloud-skipper-ci-image
+  - get: spring-cloud-dataflow-ci-image
     trigger: true
     passed:
-      - "spring-cloud-skipper-ci-images"
+      - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: true
   - get: artifactory-repo
@@ -156,7 +156,7 @@ jobs:
     - task: build-project
       privileged: true
       timeout: 90m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
@@ -171,10 +171,10 @@ jobs:
   serial: true
   public: false
   plan:
-  - get: spring-cloud-skipper-ci-image
+  - get: spring-cloud-dataflow-ci-image
     trigger: true
     passed:
-      - "spring-cloud-skipper-ci-images"
+      - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: true
   - get: artifactory-repo
@@ -185,7 +185,7 @@ jobs:
     - task: build-project
       privileged: true
       timeout: 90m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
@@ -200,10 +200,10 @@ jobs:
   serial: true
   public: false
   plan:
-  - get: spring-cloud-skipper-ci-image
+  - get: spring-cloud-dataflow-ci-image
     trigger: true
     passed:
-      - "spring-cloud-skipper-ci-images"
+      - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: true
   - get: artifactory-repo
@@ -214,7 +214,7 @@ jobs:
     - task: build-project
       privileged: true
       timeout: 90m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: git-repo/((base-path))/ci/tasks/build-project.yml
       params:
         BASE_PATH: ((base-path))
@@ -229,10 +229,10 @@ jobs:
   serial: true
   public: false
   plan:
-  - get: spring-cloud-skipper-ci-image
+  - get: spring-cloud-dataflow-ci-image
     trigger: true
     passed:
-      - "spring-cloud-skipper-ci-images"
+      - "spring-cloud-dataflow-ci-images"
   - get: ci-git-repo
   - get: ci-apps-git-repo
     trigger: true
@@ -240,7 +240,7 @@ jobs:
     - task: build-skipper-server-with-drivers100
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -254,7 +254,7 @@ jobs:
     - task: build-skipper-server-with-drivers101
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -268,7 +268,7 @@ jobs:
     - task: build-skipper-server-with-drivers102
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -282,7 +282,7 @@ jobs:
     - task: build-skipper-server-with-drivers103
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -296,7 +296,7 @@ jobs:
     - task: build-skipper-server-with-drivers104
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -310,7 +310,7 @@ jobs:
     - task: build-skipper-server-with-drivers105
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -324,7 +324,7 @@ jobs:
     - task: build-skipper-server-with-drivers110
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -338,7 +338,7 @@ jobs:
     - task: build-skipper-server-with-drivers11x
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -352,7 +352,7 @@ jobs:
     - task: build-skipper-server-with-drivers20x
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo
@@ -366,7 +366,7 @@ jobs:
     - task: build-dataflow-server-with-drivers20x
       privileged: true
       timeout: 30m
-      image: spring-cloud-skipper-ci-image
+      image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-dataflow-server-with-drivers.yml
       input_mapping:
         git-repo: ci-git-repo

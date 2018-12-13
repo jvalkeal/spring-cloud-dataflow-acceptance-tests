@@ -93,7 +93,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-skipper-servers-with-drivers"
+      - "build-servers-with-drivers"
   - do:
     - task: build-project
       privileged: true
@@ -122,7 +122,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-skipper-servers-with-drivers"
+      - "build-servers-with-drivers"
   - do:
     - task: build-project
       privileged: true
@@ -151,7 +151,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-skipper-servers-with-drivers"
+      - "build-servers-with-drivers"
   - do:
     - task: build-project
       privileged: true
@@ -180,7 +180,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-skipper-servers-with-drivers"
+      - "build-servers-with-drivers"
   - do:
     - task: build-project
       privileged: true
@@ -209,7 +209,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-skipper-servers-with-drivers"
+      - "build-servers-with-drivers"
   - do:
     - task: build-project
       privileged: true
@@ -225,7 +225,7 @@ jobs:
           params:
             file: distribution-repository/spring-cloud-dataflow-acceptance-tests-*.tar.gz
 
-- name: build-skipper-servers-with-drivers
+- name: build-servers-with-drivers
   serial: true
   public: false
   plan:

@@ -3,9 +3,11 @@ include 'spring-cloud-dataflow-acceptance-core'
 // below image projects doesn't have their own directories,
 // instead we use legacy vs. drivers keyword and last postfix
 // to dynamically configure docker tasks
-include 'spring-cloud-dataflow-acceptance-image-legacy-172'
 include 'spring-cloud-dataflow-acceptance-image-legacy-173'
 include 'spring-cloud-dataflow-acceptance-image-legacy-17x'
+include 'spring-cloud-dataflow-acceptance-image-legacy-20x'
+include 'spring-cloud-dataflow-acceptance-image-drivers-173'
+include 'spring-cloud-dataflow-acceptance-image-drivers-17x'
 include 'spring-cloud-dataflow-acceptance-image-drivers-20x'
 include 'spring-cloud-skipper-acceptance-image-legacy-100'
 include 'spring-cloud-skipper-acceptance-image-legacy-101'

@@ -363,6 +363,34 @@ jobs:
         APP_VERSION: 20x
         APP_TEMPLATE: skipper-server-with-drivers-template3
         SKIPPER_VERSION: 2.0.0.BUILD-SNAPSHOT
+    - task: build-dataflow-server-with-drivers173
+      privileged: true
+      timeout: 30m
+      image: spring-cloud-dataflow-ci-image
+      file: ci-git-repo/((base-path))/ci/tasks/build-dataflow-server-with-drivers.yml
+      input_mapping:
+        git-repo: ci-git-repo
+      output_mapping:
+        distribution-repository: distribution-repository-dataflow173
+      params:
+        BASE_PATH: ((base-path))
+        APP_VERSION: 173
+        APP_TEMPLATE: dataflow-server-with-drivers-template1
+        DATAFLOW_VERSION: 1.7.3.RELEASE
+    - task: build-dataflow-server-with-drivers17x
+      privileged: true
+      timeout: 30m
+      image: spring-cloud-dataflow-ci-image
+      file: ci-git-repo/((base-path))/ci/tasks/build-dataflow-server-with-drivers.yml
+      input_mapping:
+        git-repo: ci-git-repo
+      output_mapping:
+        distribution-repository: distribution-repository-dataflow17x
+      params:
+        BASE_PATH: ((base-path))
+        APP_VERSION: 17x
+        APP_TEMPLATE: dataflow-server-with-drivers-template1
+        DATAFLOW_VERSION: 1.7.4.BUILD-SNAPSHOT
     - task: build-dataflow-server-with-drivers20x
       privileged: true
       timeout: 30m
@@ -375,7 +403,7 @@ jobs:
       params:
         BASE_PATH: ((base-path))
         APP_VERSION: 20x
-        APP_TEMPLATE: dataflow-server-with-drivers-template1
+        APP_TEMPLATE: dataflow-server-with-drivers-template2
         DATAFLOW_VERSION: 2.0.0.BUILD-SNAPSHOT
   - task: aggregate-build-skipper-server-with-drivers
     config:
@@ -395,6 +423,8 @@ jobs:
       - name: distribution-repository-skipper110
       - name: distribution-repository-skipper11x
       - name: distribution-repository-skipper20x
+      - name: distribution-repository-dataflow173
+      - name: distribution-repository-dataflow17x
       - name: distribution-repository-dataflow20x
       outputs:
       - name: distribution-repository

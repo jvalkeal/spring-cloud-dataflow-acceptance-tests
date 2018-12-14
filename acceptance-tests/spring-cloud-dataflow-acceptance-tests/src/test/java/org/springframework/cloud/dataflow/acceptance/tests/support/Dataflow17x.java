@@ -24,9 +24,6 @@ import org.junit.jupiter.api.Tag;
 
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-@Dataflow173
-@Dataflow17x
-@Dataflow20x
-@Tag("dataflowall")
-public @interface DataflowAll {
+@Tag("dataflow17x")
+public @interface Dataflow17x {
 }

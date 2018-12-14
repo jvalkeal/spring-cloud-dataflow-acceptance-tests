@@ -29,8 +29,6 @@ buildscript {
 		springCloudSkipper20xVersionTag = '2.0.0'
 		springCloudSkipper20xVersion = "${springCloudSkipper20xVersionTag}.BUILD-SNAPSHOT"
 		// dataflow versions
-		springCloudDataflow172VersionTag = '1.7.2'
-		springCloudDataflow172Version = "${springCloudDataflow172VersionTag}.RELEASE"
 		springCloudDataflow173VersionTag = '1.7.3'
 		springCloudDataflow173Version = "${springCloudDataflow173VersionTag}.RELEASE"
 		springCloudDataflow17xVersionTag = '1.7.4'

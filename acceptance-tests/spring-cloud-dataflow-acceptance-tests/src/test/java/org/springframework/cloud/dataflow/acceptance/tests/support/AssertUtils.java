@@ -34,12 +34,12 @@ public abstract class AssertUtils {
 	private static final Logger log = LoggerFactory.getLogger(AssertUtils.class);
 
 	public static void assertDataflowServerRunning(String url) {
-		assertServerResponse("spring-cloud-starter-dataflow-server-local", url, 1, TimeUnit.SECONDS, 120,
+		assertServerResponse("spring-cloud-starter-dataflow-server-local", url, 1, TimeUnit.SECONDS, 180,
 				TimeUnit.SECONDS);
 	}
 
 	public static void assertSkipperServerRunning(String url) {
-		assertServerResponse("Spring Cloud Skipper Server", url, 1, TimeUnit.SECONDS, 120,
+		assertServerResponse("Spring Cloud Skipper Server", url, 1, TimeUnit.SECONDS, 180,
 				TimeUnit.SECONDS);
 	}
 

@@ -10,16 +10,16 @@ then from server image reference into that JDBC uri using hostname
 `mysql`.
 
 - _ci_ contains concourse relates configs, scripts and images.
-- _custom-apps_ contains custom skipper server builds bundling
-  additional JDBC drivers.
+- _custom-apps_ contains custom skipper and dataflow server builds
+  bundling additional JDBC drivers.
 - _docker-images_ contains additional images not available from
   dockerhub we need during a tests. These images may contain something
   we can't expose publicly due to licensing, i.e. oracle.
-- _spring-cloud-skipper-acceptance-core_ contains base system for
+- _spring-cloud-dataflow-acceptance-core_ contains base system for
   integration tests, i.e. `junit5` integration into `docker-compose`.
-- _spring-cloud-skipper-acceptance-tests_ contains actual acceptance
+- _spring-cloud-dataflow-acceptance-tests_ contains actual acceptance
   tests.
-- _spring-cloud-skipper-acceptance-image-*_ contains images we only
+- _spring-cloud-dataflow-acceptance-image-*_ contains images we only
   need locally within a build and which doesn't need to go into repos.
   Also these are mosly used to build images out from fatjars and it's
   more reliable to have i.e. snapshot fatjar to converted into image
@@ -62,24 +62,24 @@ Databases have tags `oracle`, `mysql` and `postgres`. As we have initial bootstr
 migration tests, there are tags `migration` and `bootstrap` respectively. Different skipper
 versions have tags like `skipper100`, `skipper101`, etc. Version tag `skipper11x` always
 maps to latest snapshot from a branch `1.1.x`. Special version tag `skipperall` matches
-all versions.
+all versions. There's also similar type of tags for dataflow.
 
 All these run postgresql related tests but skips migration tests.
 ```
-./gradlew clean build -PskipperIncludeTags='postgres & !migration'
-./gradlew clean build -PskipperIncludeTags=postgres -PskipperExcludeTags=migration
-./gradlew clean build -PskipperIncludeTags='postgres&!migration'
+./gradlew clean build -PdataflowIncludeTags='postgres & !migration'
+./gradlew clean build -PdataflowIncludeTags=postgres -PdataflowExcludeTags=migration
+./gradlew clean build -PdataflowIncludeTags='postgres&!migration'
 ```
 
 This would run unly migration tests with postgresql.
 ```
-./gradlew clean build -PskipperIncludeTags='postgres&migration'
+./gradlew clean build -PdataflowIncludeTags='postgres&migration'
 ```
 
 
 This would run postgresql tests with latest version from `1.1.x` branch and skips migration tests.
 ```
-./gradlew clean build -PskipperIncludeTags='postgres&skipper11x&!migration'
+./gradlew clean build -PdataflowIncludeTags='postgres&skipper11x&!migration'
 ```
 
 === Deploy Pipeline
@@ -116,8 +116,8 @@ and `branch` with your stuff.
 ```
 fly -t ci set-pipeline -p mytest -c ci/pipeline.yml -l ci/parameters.yml \
   -v branch=mybranch \
-  -v github-repo=https://github.com/<your_github_id>/spring-cloud-skipper.git \
-  -v github-repo-raw=https://raw.githubusercontent.com/<your_github_id>/spring-cloud-skipper
+  -v github-repo=https://github.com/<your_github_id>/spring-cloud-dataflow-acceptance-tests.git \
+  -v github-repo-raw=https://raw.githubusercontent.com/<your_github_id>/spring-cloud-dataflow-acceptance-tests
 ```
 
 === Problems and Other Info

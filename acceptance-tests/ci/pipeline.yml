@@ -6,7 +6,7 @@ resource_types:
   type: docker-image
   source:
     repository: springio/artifactory-resource
-    tag: 0.0.3
+    tag: 0.0.6
 
 #################################################
 # Resources
@@ -46,6 +46,22 @@ resources:
     username: ((artifactory-username))
     password: ((artifactory-password))
     build_name: ((build-name))
+
+- name: artifactory-repo-skipper
+  type: artifactory-resource
+  source:
+    uri: ((artifactory-server))
+    username: ((artifactory-username))
+    password: ((artifactory-password))
+    build_name: "Spring Cloud Skipper - Spring Cloud Skipper - Master - Build and install Skipper"
+
+- name: artifactory-repo-dataflow
+  type: artifactory-resource
+  source:
+    uri: ((artifactory-server))
+    username: ((artifactory-username))
+    password: ((artifactory-password))
+    build_name: "Spring Cloud Data Flow - Spring Cloud Data Flow - Master - Build and install SCDF"
 
 - name: spring-cloud-dataflow-ci-image
   type: docker-image
@@ -235,6 +251,14 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: ci-git-repo
   - get: ci-apps-git-repo
+    trigger: true
+  - get: artifactory-repo-skipper
+    params:
+      download_artifacts: false
+    trigger: true
+  - get: artifactory-repo-dataflow
+    params:
+      download_artifacts: false
     trigger: true
   - aggregate:
     - task: build-skipper-server-with-drivers100

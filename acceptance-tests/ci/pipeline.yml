@@ -323,6 +323,29 @@ jobs:
       exclude:
         - "**/*.xml"
 
+- name: deploy-docker-servers
+  plan:
+  - get: spring-cloud-dataflow-ci-image
+    trigger: true
+    passed:
+      - "spring-cloud-dataflow-ci-images"
+  - get: git-repo
+    trigger: false
+  - get: artifactory-repo
+    trigger: true
+    passed:
+      - "build-servers-with-drivers"
+  - do:
+    - task: build-project
+      privileged: true
+      timeout: 90m
+      image: spring-cloud-dataflow-ci-image
+      file: git-repo/((base-path))/ci/tasks/build-project.yml
+      params:
+        BASE_PATH: ((base-path))
+        DATAFLOW_INCLUDE_TAGS: postgres
+        ARTIFACTORY_DOCKER_PUSH: true
+
 - name: acceptance-tests-postgres
   serial: true
   public: false
@@ -336,7 +359,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-servers-with-drivers"
+      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -365,7 +388,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-servers-with-drivers"
+      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -394,7 +417,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-servers-with-drivers"
+      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -423,7 +446,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-servers-with-drivers"
+      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -452,7 +475,7 @@ jobs:
   - get: artifactory-repo
     trigger: true
     passed:
-      - "build-servers-with-drivers"
+      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true

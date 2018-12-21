@@ -1,7 +1,7 @@
 version: '3'
 services:
   dataflow:
-    image: 'spring-cloud-dataflow-acceptance-image-drivers20x'
+    image: 'springsource-docker-private-local.jfrog.io/scdf/spring-cloud-dataflow-acceptance-image-drivers20x'
     container_name: dataflow
     network_mode: bridge
     environment:

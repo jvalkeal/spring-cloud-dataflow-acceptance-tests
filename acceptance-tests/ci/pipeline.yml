@@ -80,6 +80,15 @@ resources:
     secret_access_key: ((spr-s3-secret-access-key))
     region_name: us-west-1
 
+- name: acceptance-tests-trigger1
+  type: s3
+  source:
+    bucket: ((spr-artifacts-s3-bucket-name))
+    regexp: triggers/trigger1-(.*)
+    access_key_id: ((spr-s3-access-key-id))
+    secret_access_key: ((spr-s3-secret-access-key))
+    region_name: us-west-1
+
 #################################################
 # Jobs
 #################################################
@@ -354,6 +363,11 @@ jobs:
         DATAFLOW_INCLUDE_TAGS: postgres
         ARTIFACTORY_DOCKER_PUSH: true
         EXTRA_GRADLE_CMDLINE: "-x test"
+      on_success:
+        aggregate:
+        - put: acceptance-tests-trigger1
+          params:
+            file: triggers/trigger1-*
 
 - name: acceptance-tests-postgres
   serial: true
@@ -365,6 +379,10 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
+  - get: acceptance-tests-trigger1
+    trigger: true
+    passed:
+      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true

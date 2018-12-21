@@ -332,7 +332,7 @@ jobs:
       exclude:
         - "**/*.xml"
 
-- name: deploy-docker-servers
+- name: build-docker-servers
   plan:
   - get: spring-cloud-dataflow-ci-image
     trigger: true
@@ -382,7 +382,7 @@ jobs:
   - get: acceptance-tests-trigger1
     trigger: true
     passed:
-      - "deploy-docker-servers"
+      - "build-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -408,6 +408,10 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
+  - get: acceptance-tests-trigger1
+    trigger: true
+    passed:
+      - "build-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -433,6 +437,10 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
+  - get: acceptance-tests-trigger1
+    trigger: true
+    passed:
+      - "build-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -458,6 +466,10 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
+  - get: acceptance-tests-trigger1
+    trigger: true
+    passed:
+      - "build-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -483,6 +495,10 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
+  - get: acceptance-tests-trigger1
+    trigger: true
+    passed:
+      - "build-docker-servers"
   - do:
     - task: build-project
       privileged: true

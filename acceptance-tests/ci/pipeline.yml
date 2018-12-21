@@ -330,8 +330,16 @@ jobs:
     passed:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
-    trigger: false
-  - get: artifactory-repo
+    trigger: false    
+  - get: artifactory-repo-dataflow
+    params:
+      download_artifacts: false
+    trigger: true
+    passed:
+      - "build-servers-with-drivers"
+  - get: artifactory-repo-skipper
+    params:
+      download_artifacts: false
     trigger: true
     passed:
       - "build-servers-with-drivers"
@@ -345,6 +353,7 @@ jobs:
         BASE_PATH: ((base-path))
         DATAFLOW_INCLUDE_TAGS: postgres
         ARTIFACTORY_DOCKER_PUSH: true
+        EXTRA_GRADLE_CMDLINE: "-x test"
 
 - name: acceptance-tests-postgres
   serial: true
@@ -356,10 +365,6 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
-  - get: artifactory-repo
-    trigger: true
-    passed:
-      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -385,10 +390,6 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
-  - get: artifactory-repo
-    trigger: true
-    passed:
-      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -414,10 +415,6 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
-  - get: artifactory-repo
-    trigger: true
-    passed:
-      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -443,10 +440,6 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
-  - get: artifactory-repo
-    trigger: true
-    passed:
-      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true
@@ -472,10 +465,6 @@ jobs:
       - "spring-cloud-dataflow-ci-images"
   - get: git-repo
     trigger: false
-  - get: artifactory-repo
-    trigger: true
-    passed:
-      - "deploy-docker-servers"
   - do:
     - task: build-project
       privileged: true

@@ -131,7 +131,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper100
       params:
@@ -145,7 +145,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper101
       params:
@@ -159,7 +159,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper102
       params:
@@ -173,7 +173,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper103
       params:
@@ -187,7 +187,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper104
       params:
@@ -201,7 +201,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper105
       params:
@@ -215,7 +215,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper110
       params:
@@ -229,7 +229,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper11x
       params:
@@ -243,7 +243,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-skipper-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-skipper20x
       params:
@@ -257,7 +257,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-dataflow-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-dataflow173
       params:
@@ -271,7 +271,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-dataflow-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-dataflow17x
       params:
@@ -285,7 +285,7 @@ jobs:
       image: spring-cloud-dataflow-ci-image
       file: ci-git-repo/((base-path))/ci/tasks/build-dataflow-server-with-drivers.yml
       input_mapping:
-        git-repo: ci-git-repo
+        git-repo: ci-apps-git-repo
       output_mapping:
         distribution-repository: distribution-repository-dataflow20x
       params:
@@ -301,7 +301,7 @@ jobs:
         source:
           repository: busybox
       inputs:
-      - name: ci-git-repo
+      - name: ci-apps-git-repo
       - name: distribution-repository-skipper100
       - name: distribution-repository-skipper101
       - name: distribution-repository-skipper102

@@ -301,7 +301,7 @@ jobs:
         source:
           repository: busybox
       inputs:
-      - name: ci-apps-git-repo
+      - name: ci-git-repo
       - name: distribution-repository-skipper100
       - name: distribution-repository-skipper101
       - name: distribution-repository-skipper102

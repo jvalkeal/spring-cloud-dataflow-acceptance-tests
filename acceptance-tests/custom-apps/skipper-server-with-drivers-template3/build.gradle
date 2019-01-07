@@ -6,7 +6,7 @@ buildscript {
 		oracleJdbcDriverVersion = project.properties['oracleJdbcDriverVersion'] ?: '12.2.0.1'
 		mssqlJdbcDriverVersion = project.properties['mssqlJdbcDriverVersion'] ?: '7.0.0.jre8'
 		db2JdbcDriverVersion = project.properties['db2JdbcDriverVersion'] ?: '4.19.26'
-		springCloudVersion = project.properties['springCloudVersion'] ?: 'Greenwich.M3'
+		springCloudVersion = project.properties['springCloudVersion'] ?: 'Greenwich.RC1'
 		springCloudServicesVersion = project.properties['springCloudVServicesersion'] ?: '2.0.2.RELEASE'
 		springCloudSkipperVersion = project.properties['springCloudSkipperVersion'] ?: '2.0.0.BUILD-SNAPSHOT'
 	}

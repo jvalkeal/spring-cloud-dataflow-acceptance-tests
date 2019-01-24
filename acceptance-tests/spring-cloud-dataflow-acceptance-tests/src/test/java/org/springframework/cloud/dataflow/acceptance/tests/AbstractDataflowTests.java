@@ -36,11 +36,23 @@ public abstract class AbstractDataflowTests {
 		assertSkipperServerRunning(dockerComposeInfo, to, container);
 	}
 
+	protected static void upgradeDataflow(DockerComposeInfo dockerComposeInfo, String from, String to, String container) {
+		stop(dockerComposeInfo, from);
+		start(dockerComposeInfo, to);
+		assertDataflowServerRunning(dockerComposeInfo, to, container, false);
+	}
+
 	protected static void assertDataflowServerRunning(DockerComposeInfo dockerComposeInfo, String id, String container) {
+		assertDataflowServerRunning(dockerComposeInfo, id, container, true);
+	}
+
+	protected static void assertDataflowServerRunning(DockerComposeInfo dockerComposeInfo, String id, String container, boolean skipper) {
 		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
 		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/about";
 		AssertUtils.assertDataflowServerRunning(url);
-		AssertUtils.assertSkipperServerRunning(url);
+		if (skipper) {
+			AssertUtils.assertSkipperServerRunning(url);
+		}
 	}
 
 	protected static void assertSkipperServerRunning(DockerComposeInfo dockerComposeInfo, String id, String container) {

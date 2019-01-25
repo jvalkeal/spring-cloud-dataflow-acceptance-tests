@@ -15,6 +15,10 @@
  */
 package org.springframework.cloud.dataflow.acceptance.tests;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.cloud.dataflow.acceptance.core.DockerCompose;
@@ -39,8 +43,7 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xpostgres.yml" }, services = { "dataflow" }, log = "dataflow17x/")
 	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xpostgres.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
 	public void testMigrationFrom173ToLatestWithPostgres(DockerComposeInfo dockerComposeInfo) throws Exception {
-		assertDataflowServerRunning(dockerComposeInfo, "dataflow17x", "dataflow", false);
-		upgradeDataflow(dockerComposeInfo, "dataflow17x", "dataflow20x", "dataflow");
+		migrationAsserts(dockerComposeInfo);
 	}
 
 	@Test
@@ -50,8 +53,7 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xmysql.yml" }, services = { "dataflow" }, log = "dataflow17x/")
 	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xmysql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
 	public void testMigrationFrom173ToLatestWithMysql(DockerComposeInfo dockerComposeInfo) throws Exception {
-		assertDataflowServerRunning(dockerComposeInfo, "dataflow17x", "dataflow", false);
-		upgradeDataflow(dockerComposeInfo, "dataflow17x", "dataflow20x", "dataflow");
+		migrationAsserts(dockerComposeInfo);
 	}
 
 	@Test
@@ -61,8 +63,7 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xoracle.yml" }, services = { "dataflow" }, log = "dataflow17x/")
 	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xoracle.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
 	public void testMigrationFrom173ToLatestWithOracle(DockerComposeInfo dockerComposeInfo) throws Exception {
-		assertDataflowServerRunning(dockerComposeInfo, "dataflow17x", "dataflow", false);
-		upgradeDataflow(dockerComposeInfo, "dataflow17x", "dataflow20x", "dataflow");
+		migrationAsserts(dockerComposeInfo);
 	}
 
 	@Test
@@ -72,8 +73,7 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xmssql.yml" }, services = { "dataflow" }, log = "dataflow17x/")
 	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xmssql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
 	public void testMigrationFrom173ToLatestWithMsSql(DockerComposeInfo dockerComposeInfo) throws Exception {
-		assertDataflowServerRunning(dockerComposeInfo, "dataflow17x", "dataflow", false);
-		upgradeDataflow(dockerComposeInfo, "dataflow17x", "dataflow20x", "dataflow");
+		migrationAsserts(dockerComposeInfo);
 	}
 
 	@Test
@@ -83,7 +83,20 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xdb2.yml" }, services = { "dataflow" }, log = "dataflow17x/")
 	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xdb2.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
 	public void testMigrationFrom173ToLatestWithDb2(DockerComposeInfo dockerComposeInfo) throws Exception {
+		migrationAsserts(dockerComposeInfo);
+	}
+
+	private void migrationAsserts(DockerComposeInfo dockerComposeInfo) {
+		// check 17x running
 		assertDataflowServerRunning(dockerComposeInfo, "dataflow17x", "dataflow", false);
+		// register stream/task apps and check we have something
+		List<String> initialRegisterApps = registerApps(dockerComposeInfo, "dataflow17x", "dataflow");
+		assertThat(initialRegisterApps.size()).isGreaterThan(0);
+		// upgrade to 20x and check running
 		upgradeDataflow(dockerComposeInfo, "dataflow17x", "dataflow20x", "dataflow");
+		// check we still have same apps after upgrade
+		List<String> migratedRegisterApps = registerApps(dockerComposeInfo, "dataflow20x", "dataflow");
+		assertThat(migratedRegisterApps.size()).isGreaterThan(0);
+		assertThat(initialRegisterApps).containsExactlyInAnyOrderElementsOf(migratedRegisterApps);
 	}
 }

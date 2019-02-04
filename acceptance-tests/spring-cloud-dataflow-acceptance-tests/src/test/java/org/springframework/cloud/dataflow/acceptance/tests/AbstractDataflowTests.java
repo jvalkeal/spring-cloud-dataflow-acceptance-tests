@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 the original author or authors.
+ * Copyright 2018-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,5 +93,59 @@ public abstract class AbstractDataflowTests {
 		String json = template.getForObject(url + "?size=2000", String.class);
 		List<String> appsUris = JsonPath.read(json, "$._embedded.appRegistrationResourceList[*].uri");
 		return appsUris;
+	}
+
+	protected static List<String> registerStreamDefs(DockerComposeInfo dockerComposeInfo, String id, String container) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/streams/definitions";
+		RestTemplate template = new RestTemplate();
+
+		MultiValueMap<String, Object> uriVariables = new LinkedMultiValueMap<>();
+		uriVariables.add("name", "ticktock");
+		uriVariables.add("definition", "time|log");
+		template.postForObject(url, uriVariables, String.class);
+		return registeredStreamDefs(dockerComposeInfo, id, container);
+	}
+
+	protected static List<String> registeredStreamDefs(DockerComposeInfo dockerComposeInfo, String id, String container) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/streams/definitions?size=2000";
+		RestTemplate template = new RestTemplate();
+
+		String json = template.getForObject(url, String.class);
+		List<String> streamNames = JsonPath.read(json, "$._embedded.streamDefinitionResourceList[*].name");
+		return streamNames;
+	}
+
+	protected static List<String> registerTaskDefs(DockerComposeInfo dockerComposeInfo, String id, String container) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/tasks/definitions";
+		RestTemplate template = new RestTemplate();
+
+		MultiValueMap<String, Object> uriVariables = new LinkedMultiValueMap<>();
+		uriVariables.add("name", "timestamp");
+		uriVariables.add("definition", "timestamp");
+		template.postForObject(url, uriVariables, String.class);
+		return registeredTaskDefs(dockerComposeInfo, id, container);
+	}
+
+	protected static List<String> registeredTaskDefs(DockerComposeInfo dockerComposeInfo, String id, String container) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/tasks/definitions?size=2000";
+		RestTemplate template = new RestTemplate();
+
+		String json = template.getForObject(url, String.class);
+		List<String> taskNames = JsonPath.read(json, "$._embedded.taskDefinitionResourceList[*].name");
+		return taskNames;
+	}
+
+	protected static List<String> auditRecords(DockerComposeInfo dockerComposeInfo, String id, String container) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/audit-records";
+		RestTemplate template = new RestTemplate();
+
+		String json = template.getForObject(url, String.class);
+		List<String> correlationIds = JsonPath.read(json, "$._embedded.auditRecordResourceList[*].correlationId");
+		return correlationIds;
 	}
 }

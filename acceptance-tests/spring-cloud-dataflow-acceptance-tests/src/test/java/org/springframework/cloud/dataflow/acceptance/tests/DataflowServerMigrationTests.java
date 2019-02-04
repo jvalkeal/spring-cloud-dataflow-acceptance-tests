@@ -51,7 +51,9 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DataflowAll
 	@DockerCompose(id = "db", order = 0, locations = { "src/test/resources/db/mysql.yml" }, services = { "mysql" })
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xmysql.yml" }, services = { "dataflow" }, log = "dataflow17x/")
-	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xmysql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflowandskipper/dataflow20xmysql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "skipper", order = 3, locations = { "src/test/resources/skipper/skipper20xmysql.yml" }, services = { "skipper" }, start = false)
+//	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xmysql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
 	public void testMigrationFrom173ToLatestWithMysql(DockerComposeInfo dockerComposeInfo) throws Exception {
 		migrationAsserts(dockerComposeInfo);
 	}
@@ -92,11 +94,44 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 		// register stream/task apps and check we have something
 		List<String> initialRegisterApps = registerApps(dockerComposeInfo, "dataflow17x", "dataflow");
 		assertThat(initialRegisterApps.size()).isGreaterThan(0);
+
+
+		// register ticktock stream
+		List<String> initialRegisterStreams = registerStreamDefs(dockerComposeInfo, "dataflow17x", "dataflow");
+		assertThat(initialRegisterStreams.size()).isGreaterThan(0);
+
+		// register timestamp task
+		List<String> initialRegisterTasks = registerTaskDefs(dockerComposeInfo, "dataflow17x", "dataflow");
+		assertThat(initialRegisterTasks.size()).isGreaterThan(0);
+
+		// check audit records
+		List<String> initialAuditRecords = auditRecords(dockerComposeInfo, "dataflow17x", "dataflow");
+		assertThat(initialAuditRecords.size()).isGreaterThan(0);
+
+
 		// upgrade to 20x and check running
-		upgradeDataflow(dockerComposeInfo, "dataflow17x", "dataflow20x", "dataflow");
+		// start skipper as it's needed for streams even if we don't launch anything
+		stop(dockerComposeInfo, "dataflow17x");
+		start(dockerComposeInfo, "skipper");
+		assertSkipperServerRunning(dockerComposeInfo, "skipper", "skipper");
+		start(dockerComposeInfo, "dataflow20x");
+		assertDataflowServerRunning(dockerComposeInfo, "dataflow20x", "dataflow");
+
 		// check we still have same apps after upgrade
-		List<String> migratedRegisterApps = registerApps(dockerComposeInfo, "dataflow20x", "dataflow");
+		List<String> migratedRegisterApps = registeredApps(dockerComposeInfo, "dataflow20x", "dataflow");
 		assertThat(migratedRegisterApps.size()).isGreaterThan(0);
 		assertThat(initialRegisterApps).containsExactlyInAnyOrderElementsOf(migratedRegisterApps);
+
+		List<String> migratedRegisterStreams = registeredStreamDefs(dockerComposeInfo, "dataflow20x", "dataflow");
+		assertThat(migratedRegisterStreams.size()).isGreaterThan(0);
+		assertThat(initialRegisterStreams).containsExactlyInAnyOrderElementsOf(migratedRegisterStreams);
+
+		List<String> migratedRegisterTasks = registeredTaskDefs(dockerComposeInfo, "dataflow20x", "dataflow");
+		assertThat(migratedRegisterTasks.size()).isGreaterThan(0);
+		assertThat(initialRegisterTasks).containsExactlyInAnyOrderElementsOf(migratedRegisterTasks);
+
+		List<String> migratedAuditRecords = auditRecords(dockerComposeInfo, "dataflow20x", "dataflow");
+		assertThat(migratedAuditRecords.size()).isGreaterThan(0);
+		assertThat(initialAuditRecords).containsExactlyInAnyOrderElementsOf(migratedAuditRecords);
 	}
 }

@@ -32,6 +32,16 @@ import org.springframework.cloud.dataflow.acceptance.tests.support.Mysql;
 import org.springframework.cloud.dataflow.acceptance.tests.support.Oracle;
 import org.springframework.cloud.dataflow.acceptance.tests.support.Postgres;
 
+/**
+ * Essentially we're starting dataflow 17x assuming classic mode, register
+ * stream/task apps, create ticktock stream and timestamp taks, upgrade to
+ * skipper 20x and dataflow 20x and check that we still have same stuff visible.
+ * For now this is a minimal test scenario without actually running stream or
+ * task.
+ *
+ * @author Janne Valkealahti
+ *
+ */
 @ExtendWith(DockerComposeExtension.class)
 @Migration
 public class DataflowServerMigrationTests extends AbstractDataflowTests {
@@ -41,7 +51,8 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DataflowAll
 	@DockerCompose(id = "db", order = 0, locations = { "src/test/resources/db/postgres.yml" }, services = { "postgres" })
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xpostgres.yml" }, services = { "dataflow" }, log = "dataflow17x/")
-	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xpostgres.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflowandskipper/dataflow20xpostgres.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "skipper", order = 3, locations = { "src/test/resources/skipper/skipper20xpostgres.yml" }, services = { "skipper" }, start = false)
 	public void testMigrationFrom173ToLatestWithPostgres(DockerComposeInfo dockerComposeInfo) throws Exception {
 		migrationAsserts(dockerComposeInfo);
 	}
@@ -53,7 +64,6 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xmysql.yml" }, services = { "dataflow" }, log = "dataflow17x/")
 	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflowandskipper/dataflow20xmysql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
 	@DockerCompose(id = "skipper", order = 3, locations = { "src/test/resources/skipper/skipper20xmysql.yml" }, services = { "skipper" }, start = false)
-//	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xmysql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
 	public void testMigrationFrom173ToLatestWithMysql(DockerComposeInfo dockerComposeInfo) throws Exception {
 		migrationAsserts(dockerComposeInfo);
 	}
@@ -63,7 +73,8 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DataflowAll
 	@DockerCompose(id = "db", order = 0, locations = { "src/test/resources/db/oracle.yml" }, services = { "oracle" })
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xoracle.yml" }, services = { "dataflow" }, log = "dataflow17x/")
-	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xoracle.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflowandskipper/dataflow20xoracle.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "skipper", order = 3, locations = { "src/test/resources/skipper/skipper20xoracle.yml" }, services = { "skipper" }, start = false)
 	public void testMigrationFrom173ToLatestWithOracle(DockerComposeInfo dockerComposeInfo) throws Exception {
 		migrationAsserts(dockerComposeInfo);
 	}
@@ -73,7 +84,8 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DataflowAll
 	@DockerCompose(id = "db", order = 0, locations = { "src/test/resources/db/mssql.yml" }, services = { "mssql" })
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xmssql.yml" }, services = { "dataflow" }, log = "dataflow17x/")
-	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xmssql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflowandskipper/dataflow20xmssql.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "skipper", order = 3, locations = { "src/test/resources/skipper/skipper20xmssql.yml" }, services = { "skipper" }, start = false)
 	public void testMigrationFrom173ToLatestWithMsSql(DockerComposeInfo dockerComposeInfo) throws Exception {
 		migrationAsserts(dockerComposeInfo);
 	}
@@ -83,7 +95,8 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	@DataflowAll
 	@DockerCompose(id = "db", order = 0, locations = { "src/test/resources/db/db2.yml" }, services = { "db2" })
 	@DockerCompose(id = "dataflow17x", order = 1, locations = { "src/test/resources/dataflow/dataflow17xdb2.yml" }, services = { "dataflow" }, log = "dataflow17x/")
-	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflow/dataflow20xdb2.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "dataflow20x", order = 2, locations = { "src/test/resources/dataflowandskipper/dataflow20xdb2.yml" }, services = { "dataflow" }, start = false, log = "dataflow20x/")
+	@DockerCompose(id = "skipper", order = 3, locations = { "src/test/resources/skipper/skipper20xdb2.yml" }, services = { "skipper" }, start = false)
 	public void testMigrationFrom173ToLatestWithDb2(DockerComposeInfo dockerComposeInfo) throws Exception {
 		migrationAsserts(dockerComposeInfo);
 	}
@@ -91,10 +104,10 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 	private void migrationAsserts(DockerComposeInfo dockerComposeInfo) {
 		// check 17x running
 		assertDataflowServerRunning(dockerComposeInfo, "dataflow17x", "dataflow", false);
+
 		// register stream/task apps and check we have something
 		List<String> initialRegisterApps = registerApps(dockerComposeInfo, "dataflow17x", "dataflow");
 		assertThat(initialRegisterApps.size()).isGreaterThan(0);
-
 
 		// register ticktock stream
 		List<String> initialRegisterStreams = registerStreamDefs(dockerComposeInfo, "dataflow17x", "dataflow");
@@ -106,8 +119,8 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 
 		// check audit records
 		List<String> initialAuditRecords = auditRecords(dockerComposeInfo, "dataflow17x", "dataflow");
+		// 17x vs 20x will have different recorces, so we can only check that we created something
 		assertThat(initialAuditRecords.size()).isGreaterThan(0);
-
 
 		// upgrade to 20x and check running
 		// start skipper as it's needed for streams even if we don't launch anything
@@ -122,14 +135,17 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 		assertThat(migratedRegisterApps.size()).isGreaterThan(0);
 		assertThat(initialRegisterApps).containsExactlyInAnyOrderElementsOf(migratedRegisterApps);
 
+		// check migrated stream defs
 		List<String> migratedRegisterStreams = registeredStreamDefs(dockerComposeInfo, "dataflow20x", "dataflow");
 		assertThat(migratedRegisterStreams.size()).isGreaterThan(0);
 		assertThat(initialRegisterStreams).containsExactlyInAnyOrderElementsOf(migratedRegisterStreams);
 
+		// check migrated task defs
 		List<String> migratedRegisterTasks = registeredTaskDefs(dockerComposeInfo, "dataflow20x", "dataflow");
 		assertThat(migratedRegisterTasks.size()).isGreaterThan(0);
 		assertThat(initialRegisterTasks).containsExactlyInAnyOrderElementsOf(migratedRegisterTasks);
 
+		// check migrated audit records
 		List<String> migratedAuditRecords = auditRecords(dockerComposeInfo, "dataflow20x", "dataflow");
 		assertThat(migratedAuditRecords.size()).isGreaterThan(0);
 		assertThat(initialAuditRecords).containsExactlyInAnyOrderElementsOf(migratedAuditRecords);

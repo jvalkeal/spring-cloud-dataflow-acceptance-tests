@@ -15,6 +15,7 @@
  */
 package org.springframework.cloud.dataflow.acceptance.tests;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.cloud.dataflow.acceptance.core.DockerCompose;
@@ -37,6 +38,7 @@ import org.springframework.cloud.dataflow.acceptance.tests.support.SkipperAll;
  */
 @ExtendWith(DockerComposeExtension.class)
 @Migration
+@Disabled
 public class SkipperServerMigrationTests extends AbstractDataflowTests {
 
 	@Test

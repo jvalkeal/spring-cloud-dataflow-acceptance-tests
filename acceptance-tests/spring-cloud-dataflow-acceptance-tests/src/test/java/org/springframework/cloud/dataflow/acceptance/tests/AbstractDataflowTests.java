@@ -15,12 +15,17 @@
  */
 package org.springframework.cloud.dataflow.acceptance.tests;
 
+import static com.jayway.awaitility.Awaitility.with;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.cloud.dataflow.acceptance.core.DockerComposeInfo;
 import org.springframework.cloud.dataflow.acceptance.tests.support.AssertUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.jayway.jsonpath.JsonPath;
@@ -95,6 +100,19 @@ public abstract class AbstractDataflowTests {
 		return appsUris;
 	}
 
+	protected static List<String> registerApp(DockerComposeInfo dockerComposeInfo, String id, String container) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/apps/sink/fakelog";
+		RestTemplate template = new RestTemplate();
+
+		MultiValueMap<String, Object> values = new LinkedMultiValueMap<>();
+		values.add("uri", "maven://org.springframework.cloud.stream.app:log-sink-rabbit:1.3.1.RELEASE");
+		values.add("metadata-uri", "maven://org.springframework.cloud.stream.app:log-sink-rabbit:jar:metadata:1.3.1.RELEASE");
+		template.postForLocation(url, values);
+
+		return registeredApps(dockerComposeInfo, id, container);
+	}
+
 	protected static List<String> registerStreamDefs(DockerComposeInfo dockerComposeInfo, String id, String container) {
 		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
 		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/streams/definitions";
@@ -147,5 +165,38 @@ public abstract class AbstractDataflowTests {
 		String json = template.getForObject(url, String.class);
 		List<String> correlationIds = JsonPath.read(json, "$._embedded.auditRecordResourceList[*].correlationId");
 		return correlationIds;
+	}
+
+	protected static void deployStream(DockerComposeInfo dockerComposeInfo, String id, String container, String stream) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/streams/deployments/" + stream;
+		RestTemplate template = new RestTemplate();
+		template.postForObject(url, new HashMap<String, String>(), Object.class);
+	}
+
+	protected static void waitStream(DockerComposeInfo dockerComposeInfo, String id, String container, String stream,
+			String responseContains, long pollInterval, TimeUnit pollTimeUnit, long awaitInterval, TimeUnit awaitTimeUnit) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/streams/definitions/" + stream;
+		RestTemplate template = new RestTemplate();
+
+		with()
+			.pollInterval(pollInterval, pollTimeUnit)
+			.and()
+			.await()
+				.ignoreExceptions()
+				.atMost(awaitInterval, awaitTimeUnit)
+				.until(() -> {
+					String json = template.getForObject(url, String.class);
+					String status = JsonPath.read(json, "$.status");
+					return ObjectUtils.nullSafeEquals(status, responseContains);
+				});
+	}
+
+	protected static void unDeployStream(DockerComposeInfo dockerComposeInfo, String id, String container, String stream) {
+		DockerPort port = dockerComposeInfo.id(id).getRule().containers().container(container).port(9393);
+		String url = "http://" + port.getIp() + ":" + port.getExternalPort() + "/streams/deployments/" + stream;
+		RestTemplate template = new RestTemplate();
+		template.delete(url);
 	}
 }

@@ -18,6 +18,7 @@ package org.springframework.cloud.dataflow.acceptance.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -130,6 +131,8 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 		start(dockerComposeInfo, "dataflow20x");
 		assertDataflowServerRunning(dockerComposeInfo, "dataflow20x", "dataflow");
 
+		// we upgraded from 17x classic to 20x
+
 		// check we still have same apps after upgrade
 		List<String> migratedRegisterApps = registeredApps(dockerComposeInfo, "dataflow20x", "dataflow");
 		assertThat(migratedRegisterApps.size()).isGreaterThan(0);
@@ -149,5 +152,19 @@ public class DataflowServerMigrationTests extends AbstractDataflowTests {
 		List<String> migratedAuditRecords = auditRecords(dockerComposeInfo, "dataflow20x", "dataflow");
 		assertThat(migratedAuditRecords.size()).isGreaterThan(0);
 		assertThat(initialAuditRecords).containsExactlyInAnyOrderElementsOf(migratedAuditRecords);
+
+		// register app manually and check that we got new registration
+		// mostly to check that all the crazyness around hibernate_sequence works
+		List<String> newRegisterApps = registerApp(dockerComposeInfo, "dataflow20x", "dataflow");
+		assertThat(newRegisterApps.size()).isGreaterThan(migratedRegisterApps.size());
+
+		// check that ticktock stream deploy registered before migration
+		// doesn't throw error
+		deployStream(dockerComposeInfo, "dataflow20x", "dataflow", "ticktock");
+		waitStream(dockerComposeInfo, "dataflow20x", "dataflow", "ticktock", "deployed", 1, TimeUnit.SECONDS, 180,
+				TimeUnit.SECONDS);
+		unDeployStream(dockerComposeInfo, "dataflow20x", "dataflow", "ticktock");
+		waitStream(dockerComposeInfo, "dataflow20x", "dataflow", "ticktock", "undeployed", 1, TimeUnit.SECONDS, 180,
+				TimeUnit.SECONDS);
 	}
 }

@@ -39,6 +39,18 @@ resources:
     branch: ((branch))
     paths: ["((base-path))/ci/images/*"]
 
+- name: dataflow-git-repo
+  type: git
+  source:
+    uri: ((dataflow-github-repo))
+    branch: ((branch))
+
+- name: skipper-git-repo
+  type: git
+  source:
+    uri: ((skipper-github-repo))
+    branch: ((branch))
+
 - name: artifactory-repo
   type: artifactory-resource
   source:
@@ -104,6 +116,20 @@ jobs:
         BRANCH: ((branch))
         GITHUB_REPO_RAW: ((github-repo-raw))
         BASE_PATH: ((base-path))
+        
+- name: check-custom-builds
+  plan:
+  - get: git-repo
+  - get: dataflow-git-repo
+  - get: skipper-git-repo
+  - task: check-custom-builds
+    image: spring-cloud-dataflow-ci-image
+    file: git-repo/((base-path))/ci/tasks/check-custom-builds.yml
+    params:
+      BASE_PATH: ((base-path))
+      APP_VERSION: 20x
+      SKIPPER_APP_TEMPLATE: skipper-server-with-drivers-template3
+      DATAFLOW_APP_TEMPLATE: dataflow-server-with-drivers-template2
 
 - name: build-servers-with-drivers
   serial: true

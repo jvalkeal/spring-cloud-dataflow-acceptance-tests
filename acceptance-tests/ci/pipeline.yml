@@ -43,13 +43,13 @@ resources:
   type: git
   source:
     uri: ((dataflow-github-repo))
-    branch: ((branch))
+    branch: master
 
 - name: skipper-git-repo
   type: git
   source:
     uri: ((skipper-github-repo))
-    branch: ((branch))
+    branch: master
 
 - name: artifactory-repo
   type: artifactory-resource
@@ -119,6 +119,7 @@ jobs:
         
 - name: check-custom-builds
   plan:
+  - get: spring-cloud-dataflow-ci-image
   - get: git-repo
   - get: dataflow-git-repo
   - get: skipper-git-repo

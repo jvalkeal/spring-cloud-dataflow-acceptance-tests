@@ -13,3 +13,6 @@ run:
     - -exc
     - |
       ${PWD}/git-repo/${BASE_PATH}/ci/scripts/check-custom-builds.sh
+params:
+  ARTIFACTORY_USERNAME: ((artifactory-username))
+  ARTIFACTORY_PASSWORD: ((artifactory-password))

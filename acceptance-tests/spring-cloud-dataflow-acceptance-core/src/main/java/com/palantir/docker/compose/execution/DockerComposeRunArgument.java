@@ -37,4 +37,30 @@ public class DockerComposeRunArgument {
 	private static DockerComposeRunArgument of(List<String> asList) {
 		return new DockerComposeRunArgument(asList);
 	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((arguments == null) ? 0 : arguments.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+			DockerComposeRunArgument other = (DockerComposeRunArgument) obj;
+		if (arguments == null) {
+			if (other.arguments != null)
+				return false;
+		} else if (!arguments.equals(other.arguments))
+			return false;
+		return true;
+	}
 }

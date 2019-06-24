@@ -31,6 +31,37 @@ public class ContainerName {
         return semanticName();
     }
 
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((rawName == null) ? 0 : rawName.hashCode());
+		result = prime * result + ((semanticName == null) ? 0 : semanticName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+        ContainerName other = (ContainerName) obj;
+		if (rawName == null) {
+			if (other.rawName != null)
+				return false;
+		} else if (!rawName.equals(other.rawName))
+			return false;
+		if (semanticName == null) {
+			if (other.semanticName != null)
+				return false;
+		} else if (!semanticName.equals(other.semanticName))
+			return false;
+		return true;
+	}
+
     public static ContainerName fromPsLine(String psLine) {
         String[] lineComponents = psLine.split(" ");
         String rawName = lineComponents[0];

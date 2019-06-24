@@ -29,7 +29,8 @@ public class ProjectName {
 	private String projectName;
 
 	public ProjectName(String projectName) {
-		this.projectName = projectName;
+        this.projectName = projectName;
+        validate();
 	}
 
     protected String projectName() {

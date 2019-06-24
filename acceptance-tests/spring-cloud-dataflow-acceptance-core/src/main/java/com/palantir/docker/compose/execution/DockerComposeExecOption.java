@@ -41,5 +41,31 @@ public class DockerComposeExecOption {
 
 	public static DockerComposeExecOption noOptions() {
         return DockerComposeExecOption.of(ImmutableList.of());
-    }
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((options == null) ? 0 : options.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+			DockerComposeExecOption other = (DockerComposeExecOption) obj;
+		if (options == null) {
+			if (other.options != null)
+				return false;
+		} else if (!options.equals(other.options))
+			return false;
+		return true;
+	}
+
 }

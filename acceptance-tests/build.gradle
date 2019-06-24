@@ -3,6 +3,7 @@ buildscript {
 		springBootVersion = '2.0.0.RELEASE'
 		junitPlatformVersion = '1.3.2'
 		junitJupiterVersion = '5.3.2'
+		junitVintageVersion = '5.3.2'
 		//dockerComposeRuleJunit4Version = '0.33.0'
 		//gradleDockerVersion = '0.17.2'
 		jaywayAwaitility = '1.7.0'
@@ -131,6 +132,7 @@ configure(allprojects) {
 		dependencies {
 			//dependency "com.palantir.docker.compose:docker-compose-rule-junit4:$dockerComposeRuleJunit4Version"
 			dependency "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
+			dependency "org.junit.vintage:junit-vintage-engine:$junitVintageVersion"
 			// to run junit5 in sts
 			dependency "org.junit.platform:junit-platform-engine:$junitPlatformVersion"
 			dependency "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
@@ -297,6 +299,8 @@ project('spring-cloud-dataflow-acceptance-core') {
 		compile('org.junit.jupiter:junit-jupiter-api')
 		compile('org.junit.jupiter:junit-jupiter-engine')
 		compile('org.junit.jupiter:junit-jupiter-params')
+
+		compile('org.junit.vintage:junit-vintage-engine')
 
 		compile('org.junit.platform:junit-platform-engine')
 		compile('org.junit.platform:junit-platform-launcher')
